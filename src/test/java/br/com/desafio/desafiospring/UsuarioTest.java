@@ -54,7 +54,7 @@ public class UsuarioTest {
 
     @Test
     public void _1_Listar_Todos_Os_Usuarios() {
-        LOGGER.info("********** Cadastrar Novo Usuario ********** ");
+        LOGGER.info("********** Listar Todos Os Usuários ********** ");
         List<Usuario> listaUsuarios = usuarioRepository.findAll();
 
         for (Usuario usuario : listaUsuarios) {
