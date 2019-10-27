@@ -3,6 +3,7 @@ package br.com.desafio.desafiospring;
 import br.com.desafio.desafiospring.model.Usuario;
 import br.com.desafio.desafiospring.model.UsuarioKeys;
 import br.com.desafio.desafiospring.repository.UsuarioRepository;
+import br.com.desafio.desafiospring.utils.ValidaCpf;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.Assert;
-
 
 /**
  * UsuarioTest Author: Lincoln Araujo
@@ -37,16 +37,19 @@ public class UsuarioTest {
     LocalDate aniversarioConvertido = LocalDate.parse(aniversario, formatter);
     LocalDateTime hoje = LocalDateTime.now();
 
-    UsuarioKeys keys = new UsuarioKeys("01887582088", "Stephen Vincent Strange");
+    UsuarioKeys keys = new UsuarioKeys("09374970023", "Stephen Vincent Strange");
     Usuario dr = new Usuario(keys, aniversarioConvertido, "stephen.strange@marvel.com", "M", "A", hoje, hoje, 1L, 1L);
 
     @Test
     public void _0_Cadastrar_Novo_Usuario() {
         LOGGER.info("********** Cadastrar Novo Usuario ********** ");
-        usuarioRepository.save(dr);
+        if (ValidaCpf.isCPF(dr.getKeys().getNumCpf().trim())) {
+            usuarioRepository.save(dr);
+        }
 
         LOGGER.info(dr.toString());
-        Assert.notNull(dr, "Objeto não pode ser nulo");
+        Assert.notNull(dr, "O Objeto não pode ser nulo");
+        Assert.isTrue(ValidaCpf.isCPF(dr.getKeys().getNumCpf().trim()), "O CPF precisa ser válido");
     }
 
     @Test
