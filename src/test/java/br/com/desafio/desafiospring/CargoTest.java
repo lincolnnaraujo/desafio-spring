@@ -30,8 +30,7 @@ public class CargoTest {
     @Autowired
     CargoRepository cargoRepository;
 
-    LocalDateTime hoje = LocalDateTime.now();
-    Cargo novoCargo = new Cargo("Cargo Teste", hoje);
+    Cargo novoCargo = new Cargo("Cargo Teste");
 
     @Test
     public void _0_Cadastrar_Novo_Cargo() {

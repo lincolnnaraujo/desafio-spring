@@ -2,7 +2,6 @@ package br.com.desafio.desafiospring;
 
 import br.com.desafio.desafiospring.model.Perfil;
 import br.com.desafio.desafiospring.repository.PerfilRepository;
-import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -28,8 +27,7 @@ public class PerfilTest {
     @Autowired
     private PerfilRepository perfilRepository;
 
-    LocalDateTime hoje = LocalDateTime.now();
-    Perfil novoPerfil = new Perfil("Perfil Teste", hoje);
+    Perfil novoPerfil = new Perfil("Perfil Teste");
 
     @Test
     public void _0_Cadastrar_Novo_Perfil() {

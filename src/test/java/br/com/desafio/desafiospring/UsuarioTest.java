@@ -1,12 +1,15 @@
 package br.com.desafio.desafiospring;
 
+import br.com.desafio.desafiospring.model.Perfil;
 import br.com.desafio.desafiospring.model.Usuario;
 import br.com.desafio.desafiospring.model.UsuarioKeys;
+import br.com.desafio.desafiospring.repository.PerfilRepository;
 import br.com.desafio.desafiospring.repository.UsuarioRepository;
 import br.com.desafio.desafiospring.utils.ValidaCpf;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.Assert;
+
 
 /**
  * UsuarioTest Author: Lincoln Araujo
@@ -32,16 +36,23 @@ public class UsuarioTest {
     @Autowired
     UsuarioRepository usuarioRepository;
 
+    @Autowired
+    PerfilRepository perfilRepository;
+
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     String aniversario = "16/08/2016";
     LocalDate aniversarioConvertido = LocalDate.parse(aniversario, formatter);
     LocalDateTime hoje = LocalDateTime.now();
 
-    UsuarioKeys keys = new UsuarioKeys("09374970023", "Stephen Vincent Strange");
-    Usuario dr = new Usuario(keys, aniversarioConvertido, "stephen.strange@marvel.com", "M", "A", hoje, hoje, 1L, 1L);
-
     @Test
     public void _0_Cadastrar_Novo_Usuario() {
+        Perfil adm = perfilRepository.getById(1L);
+        List<Perfil> listaPerfis = new ArrayList<Perfil>();
+        listaPerfis.add(adm);
+    
+        UsuarioKeys keys = new UsuarioKeys("09374970023", "Stephen Vincent Strange");
+        Usuario dr = new Usuario(keys, aniversarioConvertido, "stephen.strange@marvel.com", "123", "M", "A", hoje, hoje, 1L, listaPerfis);
+
         LOGGER.info("********** Cadastrar Novo Usuario ********** ");
         if (ValidaCpf.isCPF(dr.getKeys().getNumCpf().trim())) {
             usuarioRepository.save(dr);

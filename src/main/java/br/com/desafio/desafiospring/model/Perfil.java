@@ -1,6 +1,5 @@
 package br.com.desafio.desafiospring.model;
 
-import java.time.LocalDateTime;
 import javax.persistence.*;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,6 +7,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.GrantedAuthority;
 
 /**
  * Perfil
@@ -16,7 +16,9 @@ import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "TB_PERFIL")
-public class Perfil {
+public class Perfil implements GrantedAuthority {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,15 +29,11 @@ public class Perfil {
     @Column(name= "descricao")
     private String descricao;
 
-    @Column(name = "data_criacao")
-    private LocalDateTime dataCriacao;
-
     public Perfil(){}
 
-    public Perfil(String _descricao, LocalDateTime _datacriacao)
+    public Perfil(String _descricao)
     {
         this.descricao = _descricao;
-        this.dataCriacao = _datacriacao;
     }
 
     public Long getId() {
@@ -53,15 +51,7 @@ public class Perfil {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
-    }
-
-    public void setDataCriacao(LocalDateTime dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
-
+    
     @Override
     public String toString()
     {
@@ -71,5 +61,10 @@ public class Perfil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public String getAuthority() {
+        return this.descricao;
     }
 }

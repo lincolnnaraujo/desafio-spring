@@ -1,6 +1,5 @@
 package br.com.desafio.desafiospring.model;
 
-import java.time.LocalDateTime;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,16 +28,12 @@ public class Cargo {
     @Column(name = "descricao")
     private String descricao;
 
-    @Column(name = "data_criacao")
-    private LocalDateTime dataCriacao;
-
     public Cargo() {
 
     }
 
-    public Cargo(String _descricao, LocalDateTime _datacriacao) {
+    public Cargo(String _descricao) {
         this.descricao = _descricao;
-        this.dataCriacao = _datacriacao;
     }
 
     public Long getId() {
@@ -56,15 +51,7 @@ public class Cargo {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
-    }
-
-    public void setDataCriacao(LocalDateTime dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
-
+    
     @Override
     public String toString()
     {
