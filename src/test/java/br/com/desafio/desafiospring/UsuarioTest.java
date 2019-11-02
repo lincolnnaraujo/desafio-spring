@@ -1,8 +1,10 @@
 package br.com.desafio.desafiospring;
 
+import br.com.desafio.desafiospring.model.Cargo;
 import br.com.desafio.desafiospring.model.Perfil;
 import br.com.desafio.desafiospring.model.Usuario;
 import br.com.desafio.desafiospring.model.UsuarioKeys;
+import br.com.desafio.desafiospring.repository.CargoRepository;
 import br.com.desafio.desafiospring.repository.PerfilRepository;
 import br.com.desafio.desafiospring.repository.UsuarioRepository;
 import br.com.desafio.desafiospring.utils.ValidaCpf;
@@ -22,7 +24,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.Assert;
 
-
 /**
  * UsuarioTest Author: Lincoln Araujo
  */
@@ -39,6 +40,9 @@ public class UsuarioTest {
     @Autowired
     PerfilRepository perfilRepository;
 
+    @Autowired
+    CargoRepository cargoRepository;
+
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     String aniversario = "16/08/2016";
     LocalDate aniversarioConvertido = LocalDate.parse(aniversario, formatter);
@@ -47,11 +51,14 @@ public class UsuarioTest {
     @Test
     public void _0_Cadastrar_Novo_Usuario() {
         Perfil adm = perfilRepository.getById(1L);
+        Cargo cargo = cargoRepository.getById(1L);
+
         List<Perfil> listaPerfis = new ArrayList<Perfil>();
         listaPerfis.add(adm);
-    
+
         UsuarioKeys keys = new UsuarioKeys("09374970023", "Stephen Vincent Strange");
-        Usuario dr = new Usuario(keys, aniversarioConvertido, "stephen.strange@marvel.com", "123", "M", "A", hoje, hoje, 1L, listaPerfis);
+        Usuario dr = new Usuario(keys, aniversarioConvertido, "stephen.strange@marvel.com", "123", "M", "A", hoje, hoje,
+                cargo, listaPerfis);
 
         LOGGER.info("********** Cadastrar Novo Usuario ********** ");
         if (ValidaCpf.isCPF(dr.getKeys().getNumCpf().trim())) {

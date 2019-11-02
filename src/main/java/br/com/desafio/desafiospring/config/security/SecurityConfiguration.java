@@ -47,16 +47,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/cargo").permitAll()
-                .antMatchers(HttpMethod.GET, "/cargo/*").permitAll().antMatchers(HttpMethod.POST, "/auth").permitAll()
+                .antMatchers(HttpMethod.GET, "/perfil").permitAll().antMatchers(HttpMethod.GET, "/usuario").permitAll()
+                .antMatchers(HttpMethod.GET, "/cargo/**").permitAll().antMatchers(HttpMethod.GET, "/perfil/**")
+                .permitAll().antMatchers(HttpMethod.GET, "/usuario/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth").permitAll().antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated().and().csrf().disable().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .addFilterBefore(new AutenticacaoTokenFilter(tokenService, UsuarioRepository),
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().headers().frameOptions().sameOrigin()
+                .and().addFilterBefore(new AutenticacaoTokenFilter(tokenService, UsuarioRepository),
                         UsernamePasswordAuthenticationFilter.class);
     }
 
     // Configurações de recursos estáticos {JS, css, Imagens etc}
     @Override
     public void configure(WebSecurity web) {
-        super.configure(web);
+        web.ignoring().antMatchers("/**.html", "/v2/api-docs", "/webjars/**", "/configuration/**", "/swagger-resources/**");
     }
 }

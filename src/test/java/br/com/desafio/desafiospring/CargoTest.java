@@ -2,7 +2,6 @@ package br.com.desafio.desafiospring;
 
 import br.com.desafio.desafiospring.model.Cargo;
 import br.com.desafio.desafiospring.repository.CargoRepository;
-import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.Assert;
-
 
 /**
  * CargoTest Author: Lincoln Araujo

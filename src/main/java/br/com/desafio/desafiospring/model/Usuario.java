@@ -12,14 +12,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-
-
-
 
 /**
  * Usuaio Author: Lincoln Araujo
@@ -45,7 +43,7 @@ public class Usuario implements UserDetails {
     @Column(name = "email")
     private String email;
 
-    @Column(name= "senha")
+    @Column(name = "senha")
     private String senha;
 
     @Column(name = "sexo")
@@ -60,8 +58,9 @@ public class Usuario implements UserDetails {
     @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
-    @Column(name = "id_cargo_usuario")
-    private Long idCargo;
+    @ManyToOne
+    @JoinColumn(name = "id_cargo_usuario")
+    private Cargo cargo;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Perfil> perfil = new ArrayList<>();
@@ -69,8 +68,9 @@ public class Usuario implements UserDetails {
     public Usuario() {
     }
 
-    public Usuario(UsuarioKeys _keys, LocalDate _datanascimento, String _email, String _senha, String _sexo, String _status,
-            LocalDateTime _datacriacao, LocalDateTime _dataatualizacao, Long _idcargo, List<Perfil> _perfil) {
+    public Usuario(UsuarioKeys _keys, LocalDate _datanascimento, String _email, String _senha, String _sexo,
+            String _status, LocalDateTime _datacriacao, LocalDateTime _dataatualizacao, Cargo _cargo,
+            List<Perfil> _perfil) {
         this.keys = _keys;
         this.dataNascimento = _datanascimento;
         this.email = _email;
@@ -79,7 +79,7 @@ public class Usuario implements UserDetails {
         this.status = _status;
         this.dataCriacao = _datacriacao;
         this.dataAtualizacao = _dataatualizacao;
-        this.idCargo = _idcargo;
+        this.cargo = _cargo;
         this.perfil = _perfil;
     }
 
@@ -155,12 +155,12 @@ public class Usuario implements UserDetails {
         this.dataAtualizacao = dataAtualizacao;
     }
 
-    public Long getIdCargo() {
-        return idCargo;
+    public Cargo getCargo() {
+        return cargo;
     }
 
-    public void setIdCargo(Long idCargo) {
-        this.idCargo = idCargo;
+    public void setCargo(Cargo cargo) {
+        this.cargo = cargo;
     }
 
     public List<Perfil> getPerfil() {

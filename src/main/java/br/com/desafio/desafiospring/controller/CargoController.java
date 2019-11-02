@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +18,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import br.com.desafio.desafiospring.model.Cargo;
 import br.com.desafio.desafiospring.repository.CargoRepository;
@@ -29,6 +33,8 @@ import br.com.desafio.desafiospring.repository.CargoRepository;
 @RestController
 @RequestMapping("/cargo")
 public class CargoController {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(CargoController.class);
 
     @Autowired
     CargoRepository cargorepository;
@@ -64,13 +70,22 @@ public class CargoController {
         return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("{/update/id}")
+    @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<Cargo> atualizar(@PathVariable Long id, @RequestBody Cargo cargoAtualizado) {
+    public ResponseEntity<Cargo> atualizar(@PathVariable Long id, @RequestBody Cargo cargoAtualizado,
+            UriComponentsBuilder uriBuilder) throws HttpRequestMethodNotSupportedException {
         Optional<Cargo> optional = cargorepository.findById(id);
         if (optional.isPresent()) {
-            cargorepository.save(cargoAtualizado);
-            return ResponseEntity.ok(cargoAtualizado);
+            try {
+                cargorepository.save(cargoAtualizado);
+                URI uri = uriBuilder.path("/update/{id}").buildAndExpand(id).toUri();
+
+                return ResponseEntity.created(uri).body(cargoAtualizado);
+            } catch (HttpClientErrorException e) {
+                LOGGER.error("HttpClientErrorException: " + e);
+            } catch (Exception e) {
+                LOGGER.error("Exception: " + e);
+            }
         }
         return ResponseEntity.notFound().build();
     }
