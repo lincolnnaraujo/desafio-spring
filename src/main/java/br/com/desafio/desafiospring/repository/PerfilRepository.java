@@ -4,6 +4,7 @@ import br.com.desafio.desafiospring.model.Perfil;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+
 /**
  * PerfilRepository
  * Author: Lincoln Araujo

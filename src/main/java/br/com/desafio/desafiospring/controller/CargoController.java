@@ -1,12 +1,14 @@
 package br.com.desafio.desafiospring.controller;
 
+import br.com.desafio.desafiospring.model.Cargo;
+import br.com.desafio.desafiospring.repository.CargoRepository;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -20,11 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import br.com.desafio.desafiospring.model.Cargo;
-import br.com.desafio.desafiospring.repository.CargoRepository;
 
 /**
  * CargoController Author: Lincoln Araujo
@@ -38,11 +35,6 @@ public class CargoController {
 
     @Autowired
     CargoRepository cargorepository;
-
-    @GetMapping("/info")
-    public String index() {
-        return "Cargo - Controller";
-    }
 
     @GetMapping("/lista")
     public List<Cargo> lista() {
